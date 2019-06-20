@@ -13,7 +13,7 @@ public class TestBasicFile
     {
         // Initializing variables.
         boolean done = false;        
-        String menu = "Enter option\n1. Open File\n2. Copy File\n3. Write File\n4. Display Input File Attributes\n5. Display Input File Content\n6. Search Iput File\n7. Quit";
+        String menu = "Enter option\n1. Open File\n2. Copy File\n3. Write File\n4. Display Input File Attributes\n5. Display Input File Content\n6. Search Input File\n7. Quit";
         
         // Creating BasicFile object.
         BasicFile fileObject;
