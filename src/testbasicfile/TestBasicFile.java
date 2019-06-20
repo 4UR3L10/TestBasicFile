@@ -12,8 +12,8 @@ public class TestBasicFile
     public static void main(String[] args)
     {
         boolean done = false;
-        BasicFile f;
-        String menu = "Enter option\n1. Open File\n2. ....\n4. Quit";
+        BasicFile fileObject;
+        String menu = "Enter option\n1. Open File\n2. Copy File\n3. Write File\n4. Display Input File Attributes\n5. Display Input File Content\n6. Search Iput File\n7. Quit";
 
         while (!done)
         {
@@ -25,25 +25,48 @@ public class TestBasicFile
                 switch (i)
                 {
                     case 1:
-                        f = new BasicFile();
+                        fileObject = new BasicFile();
+                        break;
+                    case 2:
+                        //display("STILL ON MAINTANCE", "Error");
+                        break;
+                    case 3:
+                        //display("STILL ON MAINTANCE", "Error");
                         break;
                     case 4:
+                        //display("STILL ON MAINTANCE", "Error");
+                        break;
+                    case 5:
+                        //display("STILL ON MAINTANCE", "Error");
+                        break;
+                    case 6:
+                        //display("STILL ON MAINTANCE", "Error");
+                        break;    
+                    case 7:
                         done = true;
                         break;
                     default:
-                        display("This option is underfined", "Error");
+                        display("This option is undefine", "Error", JOptionPane.ERROR_MESSAGE);
                         break;
                 }
-            } catch (NumberFormatException | NullPointerException e)
+            } 
+            catch (NumberFormatException | NullPointerException e)
             {
-                display(e.toString(), "Error");
+                display("Error", e.toString(), JOptionPane.ERROR_MESSAGE);
             }
         }
     }
-
-    static void display(String s, String err)
+    
+    
+//    static void display(String s, String err)
+//    {
+//        JOptionPane.showMessageDialog(null, s, err, JOptionPane.ERROR_MESSAGE);
+//    }
+    
+    // Template Method for Messages.
+    static void display(String message, String windowsName, int typeOfMessage)
     {
-        JOptionPane.showMessageDialog(null, s, err, JOptionPane.ERROR_MESSAGE);
+        JOptionPane.showMessageDialog(null, message, windowsName, typeOfMessage);
     }
 
 }
