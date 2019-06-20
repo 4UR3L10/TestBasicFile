@@ -1,5 +1,7 @@
 package testbasicfile;
 
+import java.io.IOException;
+import java.nio.file.Files;
 import javax.swing.JOptionPane;
 //import java.io.IOException; ????????????????????
 
@@ -16,8 +18,8 @@ public class TestBasicFile
         String menu = "Enter option\n1. Open File\n2. Copy File\n3. Write File\n4. Display Input File Attributes\n5. Display Input File Content\n6. Search Input File\n7. Quit";
         
         // Creating BasicFile object.
-        BasicFile fileObject;
-
+        BasicFile fileObject = new BasicFile();
+        
         // Loop the program until Exit has been chosen.
         while (!done)
         {
@@ -36,10 +38,11 @@ public class TestBasicFile
                     // Opening a File
                     case 1:
                         // Executing the BasicFile constructor.
-                        fileObject = new BasicFile();
+                        fileObject.selecFile();
                         break;
                     case 2:
-                        display("STILL ON MAINTANCE", "!!!ATTENTION!!!", JOptionPane.WARNING_MESSAGE);
+                        // display("STILL ON MAINTANCE", "!!!ATTENTION!!!", JOptionPane.WARNING_MESSAGE);
+                       fileObject.copyFile();
                         break;
                     case 3:
                         display("STILL ON MAINTANCE", "!!!ATTENTION!!!", JOptionPane.WARNING_MESSAGE);
