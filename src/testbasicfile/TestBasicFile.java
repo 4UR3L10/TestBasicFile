@@ -1,7 +1,7 @@
 package testbasicfile;
 
 import javax.swing.JOptionPane;
-import java.io.IOException;
+//import java.io.IOException; ????????????????????
 
 public class TestBasicFile
 {
@@ -11,62 +11,74 @@ public class TestBasicFile
      */
     public static void main(String[] args)
     {
-        boolean done = false;
-        BasicFile fileObject;
+        // Initializing variables.
+        boolean done = false;        
         String menu = "Enter option\n1. Open File\n2. Copy File\n3. Write File\n4. Display Input File Attributes\n5. Display Input File Content\n6. Search Iput File\n7. Quit";
+        
+        // Creating BasicFile object.
+        BasicFile fileObject;
 
+        // Loop the program until Exit has been chosen.
         while (!done)
         {
-            String s = JOptionPane.showInputDialog(menu);
+            // Getting the user inout as String.
+            String tempString = JOptionPane.showInputDialog(menu);
 
+            // Try-Catch
             try
             {
-                int i = Integer.parseInt(s);
-                switch (i)
+                // Converting the user input from String to int to use it in the switch statement.
+                int convertedChoice = Integer.parseInt(tempString);
+                
+                // MENU.
+                switch (convertedChoice)
                 {
+                    // Opening a File
                     case 1:
+                        // Executing the BasicFile constructor.
                         fileObject = new BasicFile();
                         break;
                     case 2:
-                        //display("STILL ON MAINTANCE", "Error");
+                        display("STILL ON MAINTANCE", "!!!ATTENTION!!!", JOptionPane.WARNING_MESSAGE);
                         break;
                     case 3:
-                        //display("STILL ON MAINTANCE", "Error");
+                        display("STILL ON MAINTANCE", "!!!ATTENTION!!!", JOptionPane.WARNING_MESSAGE);
                         break;
                     case 4:
-                        //display("STILL ON MAINTANCE", "Error");
+                        display("STILL ON MAINTANCE", "!!!ATTENTION!!!", JOptionPane.WARNING_MESSAGE);
                         break;
                     case 5:
-                        //display("STILL ON MAINTANCE", "Error");
+                        display("STILL ON MAINTANCE", "!!!ATTENTION!!!", JOptionPane.WARNING_MESSAGE);
                         break;
                     case 6:
-                        //display("STILL ON MAINTANCE", "Error");
-                        break;    
+                        display("STILL ON MAINTANCE", "!!!ATTENTION!!!", JOptionPane.WARNING_MESSAGE);
+                        break; 
+                    // EXIT.    
                     case 7:
                         done = true;
                         break;
+                    // Else display message none was selected.    
                     default:
                         display("This option is undefine", "Error", JOptionPane.ERROR_MESSAGE);
                         break;
                 }
-            } 
+            }
+            // Else there was an error about the input.
             catch (NumberFormatException | NullPointerException e)
             {
                 display("Error", e.toString(), JOptionPane.ERROR_MESSAGE);
             }
         }
-    }
-    
-    
-//    static void display(String s, String err)
-//    {
-//        JOptionPane.showMessageDialog(null, s, err, JOptionPane.ERROR_MESSAGE);
-//    }
+    }  
     
     // Template Method for Messages.
     static void display(String message, String windowsName, int typeOfMessage)
     {
         JOptionPane.showMessageDialog(null, message, windowsName, typeOfMessage);
     }
-
 }
+
+//    static void display(String s, String err)
+//    {
+//        JOptionPane.showMessageDialog(null, s, err, JOptionPane.ERROR_MESSAGE);
+//    }
