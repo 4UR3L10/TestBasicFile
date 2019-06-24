@@ -73,8 +73,6 @@ public class BasicFile
         JOptionPane.showMessageDialog(null, message, windowsName, typeOfMessage);
     }
     
-    
-    
     void selecFile()
     {
         // Creating FileChooser object
@@ -119,14 +117,11 @@ public class BasicFile
     void copyFile()
     {
         try
-        {
-            
+        {            
             // Creating DataInputStream Object.
             DataInputStream datInpStrObj = new DataInputStream(new FileInputStream(fileObject.getPath()));
             
-            
-            
-            // SOLVEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE
+            // SOLVEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE (Name when copying)
 //            String tempString = fileObject.getParent() + "\\" + fileObject.getName();
 //            
 //            // Creating FileOutput Object.
@@ -140,8 +135,6 @@ public class BasicFile
                // Creating FileOutput Object.
                FileOutputStream fileOutStrObj = new FileOutputStream(fileObject.getParent() + "\\" + "copy-" + fileObject.getName(), true); 
             //SOLVEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE
-            
-            
             
             // Available Stream to be read.
             int length = datInpStrObj.available();
@@ -168,6 +161,77 @@ public class BasicFile
         
     }
     
+    boolean isSubstring(String s1, String s2) 
+    { 
+        int M = s1.length(); 
+        int N = s2.length(); 
+      
+        /* A loop to slide pat[] one by one */
+        for (int i = 0; i <= N - M; i++) { 
+            int j; 
+      
+            /* For current index i, check for 
+            pattern match */
+            for (j = 0; j < M; j++) 
+                if (s2.charAt(i + j) != s1.charAt(j)) 
+                    break; 
+      
+            if (j == M) 
+                return true; 
+        } 
+      
+        return false; 
+    }
+    
+    void writeOutputFile()
+    {
+        // Creating FileChooser object
+        JFileChooser chooseObject = new JFileChooser(".");
+        
+       // Brings up the dialog box for selecting a file or directory.
+        int status = chooseObject.showOpenDialog(null);
+        
+        // Try-Catch statement in case the was a problem with the file or the user exits. 
+        try
+        {
+            // If the option was not a valid one.
+            if (status != JFileChooser.APPROVE_OPTION) throw new IOException();
+            {              
+                // Returning a file and storing it in the file object.
+                fileObject = chooseObject.getSelectedFile();
+            }            
+            
+            // If file does not exist.
+            if (!fileObject.exists())
+            {
+                throw new FileNotFoundException();
+            }
+            
+            // If user selected a txt file else throw IOException.
+            if(isSubstring(".txt",  fileObject.getName()))
+            {
+              JOptionPane.showMessageDialog(null, "You have selected a text file");
+            } else {
+                throw new IOException();
+            }
+            
+            
+            // If the file was succesfully chosen.
+            display(fileObject.getName(), "File has been choosen",JOptionPane.INFORMATION_MESSAGE);
+        } 
+        
+        // In case the file was not found.
+        catch (FileNotFoundException exceptionName)
+        {
+            display("File not found ....", exceptionName.toString(), JOptionPane.WARNING_MESSAGE);
+        } 
+        
+        // In case the user cancel or exits.
+        catch (IOException exceptionName)
+        {
+            display("Approved option was not selected", exceptionName.toString(),JOptionPane.ERROR_MESSAGE);
+        } 
+    }
     
 
 //IT IS IN USE?????????????????????????????????????????????????????????????????

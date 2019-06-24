@@ -40,12 +40,11 @@ public class TestBasicFile
                         // Executing the BasicFile constructor.
                         fileObject.selecFile();
                         break;
-                    case 2:
-                        // display("STILL ON MAINTANCE", "!!!ATTENTION!!!", JOptionPane.WARNING_MESSAGE);
-                       fileObject.copyFile();
+                    case 2:                        
+                        fileObject.copyFile();
                         break;
-                    case 3:
-                        display("STILL ON MAINTANCE", "!!!ATTENTION!!!", JOptionPane.WARNING_MESSAGE);
+                    case 3:                        
+                        fileObject.writeOutputFile();
                         break;
                     case 4:
                         display("STILL ON MAINTANCE", "!!!ATTENTION!!!", JOptionPane.WARNING_MESSAGE);
