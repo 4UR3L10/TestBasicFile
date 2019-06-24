@@ -6,9 +6,12 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.FileWriter;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import java.io.IOException;
+import java.io.LineNumberReader;
  
 //import java.io.FileInputStream; 
 //import java.io.BufferedInputStream; 
@@ -183,6 +186,46 @@ public class BasicFile
         return false; 
     }
     
+//    TESTINGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGFOR WRITE OUTPUT FILE   
+    String readLineByLine(File f) throws IOException
+    {
+        //Construct the LineNumberReader object 
+        LineNumberReader lnr = new LineNumberReader(new FileReader(f));
+
+        String line = "", s = "";
+
+        while ((line = lnr.readLine()) != null)
+        {
+            s = s + "Line : " + lnr.getLineNumber() + "  " + line + "\n"; 
+        }
+
+        return s;
+    }
+
+    void saveFile() throws IOException
+    {
+        JFileChooser choose = new JFileChooser(".");
+        int status = choose.showSaveDialog(null);
+        
+        if (status != JFileChooser.APPROVE_OPTION)
+        {
+            throw new IOException();
+        }
+
+        File f = choose.getSelectedFile();
+
+        FileWriter fw = new FileWriter(f);
+
+        String s = readLineByLine(f);
+
+        fw.write(s, 0, s.length());
+
+        fw.flush();
+
+        fw.close();
+    }
+//    TESTINGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGFOR WRITE OUTPUT FILE
+    
     void writeOutputFile()
     {
         // Creating FileChooser object
@@ -218,6 +261,10 @@ public class BasicFile
             
             // If the file was succesfully chosen.
             display(fileObject.getName(), "File has been choosen",JOptionPane.INFORMATION_MESSAGE);
+            
+//            TESTINGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGG
+            readLineByLine(fileObject);
+            saveFile();
         } 
         
         // In case the file was not found.
@@ -231,6 +278,17 @@ public class BasicFile
         {
             display("Approved option was not selected", exceptionName.toString(),JOptionPane.ERROR_MESSAGE);
         } 
+        
+        
+//        try{       
+//        readLineByLine(fileObject);
+//        saveFile();
+//        }
+//        // In case the user cancel or exits.
+//        catch (IOException exceptionName)
+//        {
+//            display("Approved option was not selected", exceptionName.toString(),JOptionPane.ERROR_MESSAGE);
+//        } 
     }
     
 

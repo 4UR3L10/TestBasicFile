@@ -45,6 +45,7 @@ public class TestBasicFile
                         break;
                     case 3:                        
                         fileObject.writeOutputFile();
+                        
                         break;
                     case 4:
                         display("STILL ON MAINTANCE", "!!!ATTENTION!!!", JOptionPane.WARNING_MESSAGE);
