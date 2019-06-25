@@ -44,11 +44,12 @@ public class TestBasicFile
                         fileObject.copyFile();
                         break;
                     case 3:                        
-                        fileObject.writeOutputFile();
-                        
+// STILLLLLLLLLLL ON MAINTANCEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE.
+                        fileObject.writeOutputFile();                        
                         break;
                     case 4:
-                        display("STILL ON MAINTANCE", "!!!ATTENTION!!!", JOptionPane.WARNING_MESSAGE);
+                        //display("STILL ON MAINTANCE", "!!!ATTENTION!!!", JOptionPane.WARNING_MESSAGE);
+                        fileObject.showAttributes();
                         break;
                     case 5:
                         display("STILL ON MAINTANCE", "!!!ATTENTION!!!", JOptionPane.WARNING_MESSAGE);

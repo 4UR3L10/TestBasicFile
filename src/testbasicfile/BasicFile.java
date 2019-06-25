@@ -12,6 +12,8 @@ import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import java.io.IOException;
 import java.io.LineNumberReader;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
  
 //import java.io.FileInputStream; 
 //import java.io.BufferedInputStream; 
@@ -25,57 +27,35 @@ public class BasicFile
     // Counter for the name of the file.
     int counter = 1;
     
+    // String to get all directories.????????????????????????????????????????????
+    String directories = "";
+    
     // Constructor.
     public BasicFile()
     {
-//        // Creating FileChooser object
-//        JFileChooser chooseObject = new JFileChooser(".");
         
-//        // Brings up the dialog box for selecting a file or directory.
-//        int status = chooseObject.showOpenDialog(null);
-//        
-//        // Try-Catch statement in case the was a problem with the file or the user exits. 
-//        try
-//        {
-//            // If the option was not a valid one.
-//            if (status != JFileChooser.APPROVE_OPTION) throw new IOException();
-//            {              
-//                // Returning a file and storing it in the file object.
-//                fileObject = chooseObject.getSelectedFile();
-//            }            
-//            
-//            // If file does not exist.
-//            if (!fileObject.exists())
-//            {
-//                throw new FileNotFoundException();
-//            }
-//            
-//            // If the file was succesfully chosen.
-//            display(fileObject.getName(), "File has been choosen",JOptionPane.INFORMATION_MESSAGE);
-//        } 
-//        
-//        // In case the file was not found.
-//        catch (FileNotFoundException exceptionName)
-//        {
-//            display("File not found ....", exceptionName.toString(), JOptionPane.WARNING_MESSAGE);
-//        } 
-//        
-//        // In case the user cancel or exits.
-//        catch (IOException exceptionName)
-//        {
-//            display("Approved option was not selected", exceptionName.toString(),JOptionPane.ERROR_MESSAGE);
-//        }
     }
     
+    // Display Path of the file.
     void diplayPath(){
         JOptionPane.showMessageDialog(null, fileObject.getPath());
     }
+    
     // Template Method for Messages.
     void display(String message, String windowsName, int typeOfMessage)
     {
         JOptionPane.showMessageDialog(null, message, windowsName, typeOfMessage);
     }
     
+    // Method for the scroll pane.
+    void showScrollPane(String resultString, String heading, int MESSAGE_TYPE)
+    {
+        JTextArea textAreaObject = new JTextArea(resultString, 20, 50);
+        JScrollPane scrollPaneObject = new JScrollPane(textAreaObject);
+        JOptionPane.showMessageDialog(null, scrollPaneObject, heading, MESSAGE_TYPE);
+    }
+    
+    // Input 01 Select File
     void selecFile()
     {
         // Creating FileChooser object
@@ -117,6 +97,7 @@ public class BasicFile
         } 
     }
     
+    // Input 02 Copy File
     void copyFile()
     {
         try
@@ -124,30 +105,22 @@ public class BasicFile
             // Creating DataInputStream Object.
             DataInputStream datInpStrObj = new DataInputStream(new FileInputStream(fileObject.getPath()));
             
-            // SOLVEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE (Name when copying)
-//            String tempString = fileObject.getParent() + "\\" + fileObject.getName();
-//            
-//            // Creating FileOutput Object.
-//            if (tempString.equalsIgnoreCase(fileObject.getPath()))
-//            {
-//                // Creating FileOutput Object.
-//                tempString = fileObject.getParent() + "\\" + Integer.toString(counter) + fileObject.getName(); 
-//                counter++;
-//            }
-            
-               // Creating FileOutput Object.
-               FileOutputStream fileOutStrObj = new FileOutputStream(fileObject.getParent() + "\\" + "copy-" + fileObject.getName(), true); 
-            //SOLVEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE
+            // Creating FileOutput Object.
+            FileOutputStream fileOutStrObj = new FileOutputStream(fileObject.getParent() + "\\" + "copy-" + fileObject.getName(), true);             
             
             // Available Stream to be read.
             int length = datInpStrObj.available();
+            
             // Create buffer. 
             byte[] buf = new byte[length];
+            
             // Read the full data into the buffer. 
             datInpStrObj.readFully(buf); 
+            
             // From the buffer into the location.. 
             fileOutStrObj.write(buf, 0, buf.length);
             
+            // Display info.
             JOptionPane.showMessageDialog(null, "File was succesfully copied");
             JOptionPane.showMessageDialog(null, "File is in:  " + fileObject.getParent());
         }
@@ -160,10 +133,10 @@ public class BasicFile
         catch (IOException exceptionName)
         {
             display("Approved option was not selected", exceptionName.toString(),JOptionPane.ERROR_MESSAGE);
-        }
-        
+        }        
     }
     
+//        TESTINGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGFOR WRITE OUTPUT FILE  
     boolean isSubstring(String s1, String s2) 
     { 
         int M = s1.length(); 
@@ -186,7 +159,7 @@ public class BasicFile
         return false; 
     }
     
-//    TESTINGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGFOR WRITE OUTPUT FILE   
+ 
     String readLineByLine(File f) throws IOException
     {
         //Construct the LineNumberReader object 
@@ -226,7 +199,7 @@ public class BasicFile
 
         fw.close();
     }
-//    TESTINGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGFOR WRITE OUTPUT FILE
+
     
     void writeOutputFile()
     {
@@ -281,4 +254,42 @@ public class BasicFile
             display("Approved option was not selected", exceptionName.toString(),JOptionPane.ERROR_MESSAGE);
         }         
     }
+//        TESTINGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGFOR WRITE OUTPUT FILE
+    
+    
+    public void listRecursive(File dir) // change method....
+    {
+        if (dir.isDirectory())
+        {
+            File[] f = dir.listFiles();
+            
+            for (File i : f)
+            {
+                if (i.isFile())
+                {
+//                    System.out.println("\tFile: " + i.getAbsoluteFile() + "\t" + i.length() + " bytes");
+                      JOptionPane.showMessageDialog(null, "\tFile: " + i.getAbsoluteFile() + "\t" + i.length() + " bytes");
+                } 
+                else  // (i.isDirectory())  
+                {
+                    System.out.println("Directory: " + i.getName());
+                    listRecursive(i);  // Recursive call 
+                }
+            }
+        }
+    }
+    
+    // Input 04 Show Attributes.
+    void showAttributes()
+    {
+        String resultingString = "";
+                
+        resultingString = "Absolute Path: " + fileObject.getAbsolutePath() + "\n";
+        resultingString = resultingString + "Size: " + (fileObject.length() / 1000) + " KB" +"\n";
+//        listRecursive(fileObject);
+        
+        showScrollPane(resultingString, "Input File Attributes", JOptionPane.INFORMATION_MESSAGE);
+    }
+    
+    
 }
