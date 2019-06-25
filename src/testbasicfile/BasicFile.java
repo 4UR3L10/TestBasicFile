@@ -213,12 +213,12 @@ public class BasicFile
             throw new IOException();
         }
         
-        File f = choose.getSelectedFile();
-          
+        File f = choose.getSelectedFile();          
 
-        FileWriter fw = new FileWriter(f);
+        FileWriter fw = new FileWriter(f); // Append.
+    
 
-        String s = readLineByLine(fileObject);
+        String s = readLineByLine(fileObject);  //goood
 
         fw.write(s, 0, s.length());
 
