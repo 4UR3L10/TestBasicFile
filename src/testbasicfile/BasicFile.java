@@ -192,7 +192,8 @@ public class BasicFile
         //Construct the LineNumberReader object 
         LineNumberReader lnr = new LineNumberReader(new FileReader(f));
 
-        String line = "", s = "";
+        String line = "";
+        String s = "";
 
         while ((line = lnr.readLine()) != null)
         {
@@ -211,12 +212,13 @@ public class BasicFile
         {
             throw new IOException();
         }
-
+        
         File f = choose.getSelectedFile();
+          
 
         FileWriter fw = new FileWriter(f);
 
-        String s = readLineByLine(f);
+        String s = readLineByLine(fileObject);
 
         fw.write(s, 0, s.length());
 
@@ -250,7 +252,7 @@ public class BasicFile
                 throw new FileNotFoundException();
             }
             
-            // If user selected a txt file else throw IOException.
+            // If user selected a txt file give feedback else throw IOException.
             if(isSubstring(".txt",  fileObject.getName()))
             {
               JOptionPane.showMessageDialog(null, "You have selected a text file");
@@ -263,7 +265,7 @@ public class BasicFile
             display(fileObject.getName(), "File has been choosen",JOptionPane.INFORMATION_MESSAGE);
             
 //            TESTINGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGG
-            readLineByLine(fileObject);
+            //readLineByLine(fileObject);
             saveFile();
         } 
         
@@ -277,47 +279,6 @@ public class BasicFile
         catch (IOException exceptionName)
         {
             display("Approved option was not selected", exceptionName.toString(),JOptionPane.ERROR_MESSAGE);
-        } 
-        
-        
-//        try{       
-//        readLineByLine(fileObject);
-//        saveFile();
-//        }
-//        // In case the user cancel or exits.
-//        catch (IOException exceptionName)
-//        {
-//            display("Approved option was not selected", exceptionName.toString(),JOptionPane.ERROR_MESSAGE);
-//        } 
+        }         
     }
-    
-
-//IT IS IN USE?????????????????????????????????????????????????????????????????
-/*    
-    String getPath()
-    {
-        return fileObject.getAbsolutePath();
-    }
-
-    long getFileSize()
-    {
-        return fileObject.length();
-    }
-
-    String canRead()
-    {
-        return (fileObject.canRead()) ? "This file can be opened for reading" : "Cannot read this file";
-    }
-
-    String directoryOrFile()
-    {
-        return (fileObject.isDirectory()) ? "This is a directory and not an ordinary file" : "This is a file and not a directory";
-    }
-
-    String exists()
-    {
-        return (fileObject.exists()) ? "The physical file exists" : "The physical file does not exists";
-    }
-*/
-//IT IS IN USE?????????????????????????????????????????????????????????????????
 }
