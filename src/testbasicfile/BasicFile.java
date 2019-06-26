@@ -27,6 +27,9 @@ public class BasicFile
     // Counter for the name of the file.
     int counter = 1;
     
+    // Counter for the number of lines.
+    int numberLines = 0;
+    
     // String to get all directories.????????????????????????????????????????????
     String directories = "";
     
@@ -257,8 +260,10 @@ public class BasicFile
 //        TESTINGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGFOR WRITE OUTPUT FILE
     
     
-    public void listRecursive(File dir) // change method....
-    {
+    public String listRecursive(File dir) // change method....
+    {        
+        String counter = "";
+        
         if (dir.isDirectory())
         {
             File[] f = dir.listFiles();
@@ -268,25 +273,82 @@ public class BasicFile
                 if (i.isFile())
                 {
 //                    System.out.println("\tFile: " + i.getAbsoluteFile() + "\t" + i.length() + " bytes");
-                      JOptionPane.showMessageDialog(null, "\tFile: " + i.getAbsoluteFile() + "\t" + i.length() + " bytes");
+                      //JOptionPane.showMessageDialog(null, "\tFile: " + i.getAbsoluteFile() + "\t" + i.length() + " bytes");
+                    counter = counter + "\tFile: " + i.getAbsoluteFile() + "\t" + i.length() + " bytes\n";
                 } 
                 else  // (i.isDirectory())  
                 {
-                    System.out.println("Directory: " + i.getName());
+                    //JOptionPane.showMessageDialog(null, "Directory: " + i.getName());
+                    counter = counter + "Directory: " + i.getName();
                     listRecursive(i);  // Recursive call 
                 }
             }
         }
+        return counter;
     }
     
+    // Read Lines Of The File.
+    void readNumberOfLInes(File f) throws IOException
+    {
+        LineNumberReader lnr = null;
+        try
+        {
+            //Construct the LineNumberReader object 
+            lnr = new LineNumberReader(new FileReader(f));
+
+            String line = "";
+
+            while ((line = lnr.readLine()) != null)
+            {                            
+                numberLines++;
+            }
+        } 
+        finally
+        {
+            //Close the LineNumberReader.
+            try  
+            {
+                lnr.close();
+            } 
+            catch (IOException e)
+            {
+                e.printStackTrace();
+            }
+        }
+    }
+    
+    
     // Input 04 Show Attributes.
-    void showAttributes()
+    void showAttributes() 
     {
         String resultingString = "";
                 
         resultingString = "Absolute Path: " + fileObject.getAbsolutePath() + "\n";
-        resultingString = resultingString + "Size: " + (fileObject.length() / 1000) + " KB" +"\n";
-//        listRecursive(fileObject);
+        
+        
+        
+              resultingString = resultingString + listRecursive(fileObject.getParentFile());
+        
+              
+        
+        
+        
+        
+        resultingString = resultingString + "Size: " + (fileObject.length() / 1000) + " KB" +"\n";        
+        try
+        {
+            // If user selected a txt file show number of lines.
+            if (isSubstring(".txt", fileObject.getName()))
+            {
+                readNumberOfLInes(fileObject);
+                resultingString = resultingString + "Number of lines: " + numberLines +"\n";
+            }
+        } 
+        catch (IOException e)
+        {
+            e.printStackTrace();
+        }
+        
         
         showScrollPane(resultingString, "Input File Attributes", JOptionPane.INFORMATION_MESSAGE);
     }
