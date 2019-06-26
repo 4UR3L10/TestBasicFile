@@ -45,7 +45,8 @@ public class TestBasicFile
                         break;
                     case 3:                        
 // STILLLLLLLLLLL ON MAINTANCEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE.
-                        fileObject.writeOutputFile();                        
+//                        fileObject.writeOutputFile();      
+                        fileObject.saveTestFile();
                         break;
                     case 4:                        
                         fileObject.showAttributes();
