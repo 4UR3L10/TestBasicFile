@@ -13,6 +13,7 @@ import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import java.io.IOException;
 import java.io.LineNumberReader;
+import java.io.StreamTokenizer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JScrollPane;
@@ -59,6 +60,36 @@ public class BasicFile
         JTextArea textAreaObject = new JTextArea(resultString, 20, 50);
         JScrollPane scrollPaneObject = new JScrollPane(textAreaObject);
         JOptionPane.showMessageDialog(null, scrollPaneObject, heading, MESSAGE_TYPE);
+    }
+    
+    // Method to check if an string is a substring of the other.
+    boolean isSubstring(String s1, String s2) 
+    { 
+        int M = s1.length(); 
+        int N = s2.length(); 
+      
+        /* A loop to slide pat[] one by one */
+        for (int i = 0; i <= N - M; i++) 
+        { 
+            int j = 0; 
+      
+            /* For current index i, check for 
+            pattern match */
+            for (j = 0; j < M; j++)
+            {
+                if (s2.charAt(i + j) != s1.charAt(j))
+                {
+                    break;
+                }
+            }
+
+            if (j == M)
+            {
+                return true;
+            }
+        } 
+      
+        return false; 
     }
     
     // Input 01 Select File
@@ -142,37 +173,9 @@ public class BasicFile
         }        
     }
     
-//        TESTINGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGFOR WRITE OUTPUT FILE  
-    boolean isSubstring(String s1, String s2) 
-    { 
-        int M = s1.length(); 
-        int N = s2.length(); 
-      
-        /* A loop to slide pat[] one by one */
-        for (int i = 0; i <= N - M; i++) 
-        { 
-            int j = 0; 
-      
-            /* For current index i, check for 
-            pattern match */
-            for (j = 0; j < M; j++)
-            {
-                if (s2.charAt(i + j) != s1.charAt(j))
-                {
-                    break;
-                }
-            }
-
-            if (j == M)
-            {
-                return true;
-            }
-        } 
-      
-        return false; 
-    }
     
- 
+    
+//        TESTINGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGFOR WRITE OUTPUT FILE     
     String readLineByLine(File f) throws IOException
     {
         //Construct the LineNumberReader object 
@@ -381,53 +384,137 @@ public class BasicFile
 
     }
     
+    // Input 06 Search a given String.
     void searchFile()
     {
-        
-        
-        //Construct the LineNumberReader object 
+        // Getting the File to Search for the Given Word. 
         try
         {            
             LineNumberReader lnr = new LineNumberReader(new FileReader(fileObject));
             String word = JOptionPane.showInputDialog(null, "Enter the word to search in the file: ");
-            //word = " " + word + " ";
             String line = "";
-            String s = "";
-            
-            String[] words=null;  //Intialize the word Array
-            
+            String s = "\t\t\tFound on:\n";
+            int lineHolder = 0;
+            String[] words = null;  //Intialize the word Array.
             
             while ((line = lnr.readLine()) != null)
             {
-                words=line.split(" ");  //Split the word using space
+                words = line.split(" ");  //Split the word using space.
                 for (String testWord : words)
                 {
-                    if (testWord.equalsIgnoreCase(word))   //Search for the given word
+                    if (testWord.equalsIgnoreCase(word))   //Search for the given word.
                     {
-                        s =lnr.getLineNumber() + ": " + line + '\n';
-                        System.out.println(s);
+                        // If the Word is repeated in the same line do not show it twice.
+                        if(lineHolder == lnr.getLineNumber())
+                        {
+                            
+                        }
+                        else
+                        {
+                            s = s + lnr.getLineNumber() + ": " + line + '\n';                          
+                            lineHolder = lnr.getLineNumber();
+                        }
                     }
-                }
-//                // If searching for the word.
-//                if (isSubstring(word, line))
-//                {                  
-//                      s = s + "Line : " + lnr.getLineNumber() + "  " + line + '\n';                                         
-//                }                
+                }              
             }
             
-            //System.out.println(s);
-            
+            // Shows the line(s) in which the word was found.
+            showScrollPane(s, "Input File Search", JOptionPane.INFORMATION_MESSAGE);     
         } 
+        
         // In case the file was not found.
         catch (FileNotFoundException exceptionName)
         {
             display("File not found ....", exceptionName.toString(), JOptionPane.WARNING_MESSAGE);
         } 
+        
         // In case the user cancel or exits.
         catch (IOException exceptionName)
         {
-            display("Approved option was not selected", exceptionName.toString(),JOptionPane.ERROR_MESSAGE);
+            display("Error", exceptionName.toString(),JOptionPane.ERROR_MESSAGE);
         } 
+    }
+    
+    void searchFileTokenizer()
+    {
+        
+        try
+        {
+            // testing
+            String holder = "";
+            String finish ="";
+//            LineNumberReader lnr = new LineNumberReader(new FileReader(fileObject));
+            
+            
+            
+            int lineNumber = 0;
+            
+            StreamTokenizer st = new StreamTokenizer(new FileReader(fileObject));
+            String word = JOptionPane.showInputDialog(null, "Enter the word to search in the file: ");
+            
+            st.eolIsSignificant(true);     // Recognize end of line as token 
+            st.wordChars('"', '"');         // Recognize double quote (") as token 
+            st.wordChars('@', '@');    // Recognize at (@) as token 
+            st.wordChars(',', ',');          // Recognize comma (,) as token 
+            st.wordChars('\'', '\'');      // Recognize single quote (') as token 
+            st.wordChars('!', '!');         // Recognize exclamation(!) as token 
+            st.lowerCaseMode(true); // Convert uppercase characters to lower case 
+            
+            while (st.nextToken() != StreamTokenizer.TT_EOF)
+            {
+//                System.out.println(st.toString());
+                switch (st.ttype)
+                {
+                    case StreamTokenizer.TT_WORD:
+                        
+                        holder = holder + " " + st.sval; // testinggggggggggggg
+                        
+                        
+                        String newLowerWord = st.sval.toLowerCase();
+                        word = word.toLowerCase();
+                        
+                        if (st.sval.equalsIgnoreCase(word) || isSubstring(word, newLowerWord))
+                        {
+                           //System.out.println(st.sval + " "); 
+                            System.out.println(lineNumber + ": " + st.sval + " ");
+                        }
+//                        if (word.equalsIgnoreCase(st.sval))
+//                        {
+//                           System.out.println(st.sval + " "); 
+//                        }
+                        
+                    break;
 
+                    case StreamTokenizer.TT_NUMBER:
+                       // System.out.println(st.nval);
+                        holder = holder + " " + st.nval;
+                    break;
+
+                    case StreamTokenizer.TT_EOL:
+                        //System.out.print("\tNew line --> " + st.sval + (char) st.ttype);
+                        holder = holder + "\n";
+                        lineNumber++;
+                    break;
+
+                    default:
+                        //System.out.println((char) st.ttype + " ++> not recognized");
+                    break;
+                }
+            }
+            
+            System.out.println(holder);
+        }
+        
+        // In case the file was not found.
+        catch (FileNotFoundException exceptionName)
+        {
+            display("File not found ....", exceptionName.toString(), JOptionPane.WARNING_MESSAGE);
+        } 
+        
+        // In case the user cancel or exits.
+        catch (IOException exceptionName)
+        {
+            display("Error", exceptionName.toString(),JOptionPane.ERROR_MESSAGE);
+        }
     }
 }

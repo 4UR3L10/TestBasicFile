@@ -53,12 +53,12 @@ public class TestBasicFile
                     case 5:                        
                         fileObject.displayFile();
                         break;
-                    case 6:
-                        //display("STILL ON MAINTANCE", "!!!ATTENTION!!!", JOptionPane.WARNING_MESSAGE);
+                    case 6:                        
                         fileObject.searchFile();
                         break;                         
                     case 7:
-                        display("STILL ON MAINTANCE", "!!!ATTENTION!!!", JOptionPane.WARNING_MESSAGE);
+                        //display("STILL ON MAINTANCE", "!!!ATTENTION!!!", JOptionPane.WARNING_MESSAGE);
+                        fileObject.searchFileTokenizer();
                         break;
                     // EXIT.    
                     case 8:
