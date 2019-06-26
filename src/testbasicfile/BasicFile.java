@@ -441,13 +441,20 @@ public class BasicFile
         try
         {
             // testing
-            String holder = "";
-            String finish ="";
-//            LineNumberReader lnr = new LineNumberReader(new FileReader(fileObject));
+            LineNumberReader lnr = new LineNumberReader(new FileReader(fileObject));
+            int lineNumber = 1;
+            
+            //testing
             
             
             
-            int lineNumber = 0;
+            
+            
+            
+            
+            
+            
+            
             
             StreamTokenizer st = new StreamTokenizer(new FileReader(fileObject));
             String word = JOptionPane.showInputDialog(null, "Enter the word to search in the file: ");
@@ -462,37 +469,28 @@ public class BasicFile
             
             while (st.nextToken() != StreamTokenizer.TT_EOF)
             {
+                
 //                System.out.println(st.toString());
                 switch (st.ttype)
                 {
                     case StreamTokenizer.TT_WORD:
                         
-                        holder = holder + " " + st.sval; // testinggggggggggggg
-                        
-                        
-                        String newLowerWord = st.sval.toLowerCase();
-                        word = word.toLowerCase();
-                        
-                        if (st.sval.equalsIgnoreCase(word) || isSubstring(word, newLowerWord))
+                       String newLowerWord = st.sval.toLowerCase();
+                       word = word.toLowerCase();
+                     
+                        if (isSubstring(word, newLowerWord))
                         {
-                           //System.out.println(st.sval + " "); 
                             System.out.println(lineNumber + ": " + st.sval + " ");
-                        }
-//                        if (word.equalsIgnoreCase(st.sval))
-//                        {
-//                           System.out.println(st.sval + " "); 
-//                        }
+                        }                       
                         
                     break;
 
                     case StreamTokenizer.TT_NUMBER:
-                       // System.out.println(st.nval);
-                        holder = holder + " " + st.nval;
+                       // System.out.println(st.nval);                        
                     break;
 
                     case StreamTokenizer.TT_EOL:
-                        //System.out.print("\tNew line --> " + st.sval + (char) st.ttype);
-                        holder = holder + "\n";
+                        //System.out.print("\tNew line --> " + st.sval + (char) st.ttype);  
                         lineNumber++;
                     break;
 
@@ -502,7 +500,7 @@ public class BasicFile
                 }
             }
             
-            System.out.println(holder);
+           
         }
         
         // In case the file was not found.
