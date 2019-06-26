@@ -390,23 +390,32 @@ public class BasicFile
         {            
             LineNumberReader lnr = new LineNumberReader(new FileReader(fileObject));
             String word = JOptionPane.showInputDialog(null, "Enter the word to search in the file: ");
-            word = " " + word + " ";
+            //word = " " + word + " ";
             String line = "";
             String s = "";
             
+            String[] words=null;  //Intialize the word Array
+            
+            
             while ((line = lnr.readLine()) != null)
             {
-                // If searching for the word.
-                if (isSubstring(word, line))
+                words=line.split(" ");  //Split the word using space
+                for (String testWord : words)
                 {
-                   if(word.equalsIgnoreCase(word)){
-                      s = s + "Line : " + lnr.getLineNumber() + "  " + line + '\n'; 
-                   }                     
+                    if (testWord.equalsIgnoreCase(word))   //Search for the given word
+                    {
+                        s =lnr.getLineNumber() + ": " + line + '\n';
+                        System.out.println(s);
+                    }
                 }
-                
+//                // If searching for the word.
+//                if (isSubstring(word, line))
+//                {                  
+//                      s = s + "Line : " + lnr.getLineNumber() + "  " + line + '\n';                                         
+//                }                
             }
             
-            System.out.println(s);
+            //System.out.println(s);
             
         } 
         // In case the file was not found.
