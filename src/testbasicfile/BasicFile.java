@@ -1,3 +1,9 @@
+/*
+    Author: Aurelio Martinez 
+    Class:  COP3337-U02C-1195   
+    Copyright© Aurelio Martinez
+*/
+
 package testbasicfile;
 
 // Import Statements.
@@ -14,85 +20,21 @@ import javax.swing.JOptionPane;
 import java.io.IOException;
 import java.io.LineNumberReader;
 import java.io.StreamTokenizer;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
- 
-//import java.io.FileInputStream; 
-//import java.io.BufferedInputStream; 
-
 
 public class BasicFile
 {
     // Creating a file object.
     File fileObject;
     
-    // Counter for the name of the file.
-    int counter = 1;
-    
     // Counter for the number of lines.
     int numberLines = 0;
-    
-    // String to get all directories.????????????????????????????????????????????
-    String directories = "";
-    
-    // Default Constructor.
-    public BasicFile()
-    {
         
-    }
-    
-    // Display Path of the file.
-    public void diplayPath(){
-        JOptionPane.showMessageDialog(null, fileObject.getPath());
-    }
-    
-    // Template Method for Messages.
-    public void display(String message, String windowsName, int typeOfMessage)
-    {
-        JOptionPane.showMessageDialog(null, message, windowsName, typeOfMessage);
-    }
-    
-    // Method for the scroll pane.
-    public void showScrollPane(String resultString, String heading, int MESSAGE_TYPE)
-    {
-        JTextArea textAreaObject = new JTextArea(resultString, 20, 50);
-        JScrollPane scrollPaneObject = new JScrollPane(textAreaObject);
-        JOptionPane.showMessageDialog(null, scrollPaneObject, heading, MESSAGE_TYPE);
-    }
-    
-    // Method to check if an string is a substring of the other.
-    public boolean isSubstring(String s1, String s2) 
-    { 
-        int M = s1.length(); 
-        int N = s2.length(); 
-      
-        /* A loop to slide pat[] one by one */
-        for (int i = 0; i <= N - M; i++) 
-        { 
-            int j = 0; 
-      
-            /* For current index i, check for 
-            pattern match */
-            for (j = 0; j < M; j++)
-            {
-                if (s2.charAt(i + j) != s1.charAt(j))
-                {
-                    break;
-                }
-            }
-
-            if (j == M)
-            {
-                return true;
-            }
-        } 
-      
-        return false; 
-    }
-    
-    // Input 01 Select File
+    // Default Constructor.
+    public BasicFile(){}
+        
+    // Input 01 Select File.
     public void selecFile()
     {
         // Creating FileChooser object
@@ -134,7 +76,7 @@ public class BasicFile
         } 
     }
     
-    // Input 02 Copy File
+    // Input 02 Copy File.
     public void copyFile()
     {
         try
@@ -171,6 +113,48 @@ public class BasicFile
         {
             display("Approved option was not selected", exceptionName.toString(),JOptionPane.ERROR_MESSAGE);
         }        
+    }
+    
+    // Input 03 Save File.
+    public void saveFile()
+    {
+        try
+        {
+            // Checking if there is file loaded.
+            fileObject.canExecute();
+            
+            // Choosing to save or overwrite the file.
+            JFileChooser choose = new JFileChooser(".");
+            int status = choose.showSaveDialog(null);
+            
+            // If not save the file throw exception.
+            if (status != JFileChooser.APPROVE_OPTION)
+            {
+                throw new IOException();
+            }
+            
+            // Getting the file and passing it to File Writer.
+            File f = choose.getSelectedFile();
+
+            // Append.
+            FileWriter fileWriterObject = new FileWriter(f); 
+            
+            // Set all lines read by the method and storing them into the String.
+            String writerString = readLineByLine(fileObject); 
+
+            // Writing the info to the file.
+            fileWriterObject.write(writerString, 0, writerString.length());
+            fileWriterObject.flush();
+            
+            // Closing.
+            fileWriterObject.close();
+        }
+        
+        // In case the user cancel or exits.
+        catch (IOException exceptionName)
+        {
+            display("Approved option was not selected", exceptionName.toString(),JOptionPane.ERROR_MESSAGE);
+        }
     }
     
     // Input 04 Show Attributes.
@@ -245,10 +229,13 @@ public class BasicFile
             
             while ((line = lnr.readLine()) != null)
             {
-                words = line.split(" ");  //Split the word using space.
+                // Split the word using space.
+                words = line.split(" ");  
+                
                 for (String testWord : words)
                 {
-                    if (testWord.equalsIgnoreCase(word))   //Search for the given word.
+                    // Search for the given word.
+                    if (testWord.equalsIgnoreCase(word))   
                     {
                         // If the Word is repeated in the same line do not show it twice.
                         if(lineHolder == lnr.getLineNumber())
@@ -387,61 +374,9 @@ public class BasicFile
         {
             display("Error", exceptionName.toString(),JOptionPane.ERROR_MESSAGE);
         }
-    }
+    }    
     
-//TESTINGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGFOR WRITE OUTPUT FILE     
-    public String readLineByLine(File f) throws IOException
-    {
-        //Construct the LineNumberReader object 
-        LineNumberReader lnr = new LineNumberReader(new FileReader(f));
-
-        String line = "";
-        String s = "";
-
-        while ((line = lnr.readLine()) != null)
-        {
-            s = s + "Line : " + lnr.getLineNumber() + "  " + line + "\n"; 
-        }
-
-        return s;
-    }
-
-    public void saveTestFile()
-    {
-        try
-        {
-            fileObject.canExecute();
-            
-            JFileChooser choose = new JFileChooser(".");
-            int status = choose.showSaveDialog(null);
-
-            if (status != JFileChooser.APPROVE_OPTION)
-            {
-                throw new IOException();
-            }
-
-            File f = choose.getSelectedFile();
-
-            FileWriter fw = new FileWriter(f); // Append.
-
-            String s = readLineByLine(fileObject);  //goood
-
-            fw.write(s, 0, s.length());
-
-            fw.flush();
-
-            fw.close();
-        }
-        
-        // In case the user cancel or exits.
-        catch (IOException exceptionName)
-        {
-            display("Approved option was not selected", exceptionName.toString(),JOptionPane.ERROR_MESSAGE);
-        }
-    }
-//TESTINGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGFOR WRITE OUTPUT FILE
-    
-    
+    // Gets the files and directories of a file.
     public String listRecursive(File dir) 
     {        
         String counter = "";
@@ -452,14 +387,18 @@ public class BasicFile
             
             for (File i : f)
             {
+                // FILE.
                 if (i.isFile())
                 {
                     counter = counter + "\tFile: " + i.getAbsoluteFile() + i.length() + " bytes\n";
                 } 
-                else  // (i.isDirectory())  
+                // DIRECTORY.
+                else    
                 {                    
                     counter = counter + "\tDirectory: " + i.getName() + "\n";
-                    listRecursive(i);  // Recursive call 
+                    
+                    // Using Recursion. 
+                    listRecursive(i);  
                 }
             }
         }
@@ -496,5 +435,72 @@ public class BasicFile
         }
     }    
     
+    // Template Method for Messages.
+    public void display(String message, String windowsName, int typeOfMessage)
+    {
+        JOptionPane.showMessageDialog(null, message, windowsName, typeOfMessage);
+    }
+    
+    // Method for the scroll pane.
+    public void showScrollPane(String resultString, String heading, int MESSAGE_TYPE)
+    {
+        JTextArea textAreaObject = new JTextArea(resultString, 20, 50);
+        JScrollPane scrollPaneObject = new JScrollPane(textAreaObject);
+        JOptionPane.showMessageDialog(null, scrollPaneObject, heading, MESSAGE_TYPE);
+    }
+    
+    // Method to check if an string is a substring of the other.
+    public boolean isSubstring(String s1, String s2) 
+    { 
+        int M = s1.length(); 
+        int N = s2.length(); 
+      
+        // A loop to slide pat[] one by one.
+        for (int i = 0; i <= N - M; i++) 
+        { 
+            int j = 0; 
+      
+            //For current index i, check for pattern match.
+            for (j = 0; j < M; j++)
+            {
+                if (s2.charAt(i + j) != s1.charAt(j))
+                {
+                    break;
+                }
+            }
 
+            if (j == M)
+            {
+                return true;
+            }
+        } 
+      
+        return false; 
+    }
+    
+    // Read lines of a file.
+    public String readLineByLine(File f) throws IOException
+    {
+        // Construct the LineNumberReader object.
+        LineNumberReader lnr = new LineNumberReader(new FileReader(f));
+        
+        // Initializing vars.
+        String line = "";
+        String finalString = "";
+
+        // Keep looping until cannot read more new lines.
+        while ((line = lnr.readLine()) != null)
+        { 
+            finalString = finalString + line + "\n"; 
+        }
+        
+        // Return all lines.
+        return finalString;
+    }
 }
+
+/*
+    Author: Aurelio Martinez 
+    Class:  COP3337-U02C-1195   
+    Copyright© Aurelio Martinez
+*/

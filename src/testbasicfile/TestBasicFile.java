@@ -1,16 +1,18 @@
+/*
+    Author: Aurelio Martinez 
+    Class:  COP3337-U02C-1195  
+    Copyright© Aurelio Martinez
+*/
 package testbasicfile;
 
-import java.io.IOException;
-import java.nio.file.Files;
 import javax.swing.JOptionPane;
-//import java.io.IOException; ????????????????????
 
 public class TestBasicFile
 {
-
     /**
      * @param args the command line arguments
      */
+    
     public static void main(String[] args)
     {
         // Initializing variables.
@@ -35,42 +37,54 @@ public class TestBasicFile
                 // MENU.
                 switch (convertedChoice)
                 {
-                    // Opening a File
+                    // Opening File.
                     case 1:
                         // Executing the BasicFile constructor.
                         fileObject.selecFile();
-                        break;
+                    break;
+                    
+                    // Copy File.
                     case 2:                        
                         fileObject.copyFile();
-                        break;
-                    case 3:                        
-// STILLLLLLLLLLL ON MAINTANCEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE.
-//                        fileObject.writeOutputFile();      
-                        fileObject.saveTestFile();
-                        break;
+                    break;
+                    
+                    // Save File.
+                    case 3: 
+                        fileObject.saveFile();
+                    break;
+                    
+                    // Show Attributes.
                     case 4:                        
                         fileObject.showAttributes();
-                        break;
+                    break;
+                    
+                    // Display File Content.
                     case 5:                        
                         fileObject.displayFile();
-                        break;
+                    break;
+                    
+                    // Search in File.
                     case 6:                        
                         fileObject.searchFile();
-                        break;                         
-                    case 7:
-                        //display("STILL ON MAINTANCE", "!!!ATTENTION!!!", JOptionPane.WARNING_MESSAGE);
+                    break; 
+                    
+                    // Search using the TOkenizer method.
+                    case 7:                        
                         fileObject.searchFileTokenizer();
-                        break;
+                    break;
+                        
                     // EXIT.    
                     case 8:
                         done = true;
-                        break;    
+                    break;  
+                    
                     // Else display message none was selected.    
                     default:
                         display("This option is undefine", "Error", JOptionPane.ERROR_MESSAGE);
-                        break;
+                    break;
                 }
             }
+            
             // Else there was an error about the input.
             catch (NumberFormatException | NullPointerException e)
             {
@@ -86,7 +100,8 @@ public class TestBasicFile
     }
 }
 
-//    static void display(String s, String err)
-//    {
-//        JOptionPane.showMessageDialog(null, s, err, JOptionPane.ERROR_MESSAGE);
-//    }
+/*
+    Author: Aurelio Martinez 
+    Class:  COP3337-U02C-1195   
+    Copyright© Aurelio Martinez
+*/
