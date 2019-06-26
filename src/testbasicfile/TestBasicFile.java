@@ -1,21 +1,23 @@
+/*
+    Author: Aurelio Martinez 
+    Class:  COP3337-U02C-1195  
+    Copyright© Aurelio Martinez
+*/
 package testbasicfile;
 
-import java.io.IOException;
-import java.nio.file.Files;
 import javax.swing.JOptionPane;
-//import java.io.IOException; ????????????????????
 
 public class TestBasicFile
 {
-
     /**
      * @param args the command line arguments
      */
+    
     public static void main(String[] args)
     {
         // Initializing variables.
         boolean done = false;        
-        String menu = "Enter option\n1. Open File\n2. Copy File\n3. Write File\n4. Display Input File Attributes\n5. Display Input File Content\n6. Search Input File\n7. Quit";
+        String menu = "Enter option\n1. Open File\n2. Copy File\n3. Write File\n4. Display Input File Attributes\n5. Display Input File Content\n6. Search Input File\n7. Search Input File [Tokenizer]\n8. Quit";
         
         // Creating BasicFile object.
         BasicFile fileObject = new BasicFile();
@@ -35,37 +37,54 @@ public class TestBasicFile
                 // MENU.
                 switch (convertedChoice)
                 {
-                    // Opening a File
+                    // Opening File.
                     case 1:
                         // Executing the BasicFile constructor.
                         fileObject.selecFile();
-                        break;
+                    break;
+                    
+                    // Copy File.
                     case 2:                        
                         fileObject.copyFile();
-                        break;
-                    case 3:                        
-                        fileObject.writeOutputFile();
+                    break;
+                    
+                    // Save File.
+                    case 3: 
+                        fileObject.saveFile();
+                    break;
+                    
+                    // Show Attributes.
+                    case 4:                        
+                        fileObject.showAttributes();
+                    break;
+                    
+                    // Display File Content.
+                    case 5:                        
+                        fileObject.displayFile();
+                    break;
+                    
+                    // Search in File.
+                    case 6:                        
+                        fileObject.searchFile();
+                    break; 
+                    
+                    // Search using the TOkenizer method.
+                    case 7:                        
+                        fileObject.searchFileTokenizer();
+                    break;
                         
-                        break;
-                    case 4:
-                        display("STILL ON MAINTANCE", "!!!ATTENTION!!!", JOptionPane.WARNING_MESSAGE);
-                        break;
-                    case 5:
-                        display("STILL ON MAINTANCE", "!!!ATTENTION!!!", JOptionPane.WARNING_MESSAGE);
-                        break;
-                    case 6:
-                        display("STILL ON MAINTANCE", "!!!ATTENTION!!!", JOptionPane.WARNING_MESSAGE);
-                        break; 
                     // EXIT.    
-                    case 7:
+                    case 8:
                         done = true;
-                        break;
+                    break;  
+                    
                     // Else display message none was selected.    
                     default:
                         display("This option is undefine", "Error", JOptionPane.ERROR_MESSAGE);
-                        break;
+                    break;
                 }
             }
+            
             // Else there was an error about the input.
             catch (NumberFormatException | NullPointerException e)
             {
@@ -81,7 +100,8 @@ public class TestBasicFile
     }
 }
 
-//    static void display(String s, String err)
-//    {
-//        JOptionPane.showMessageDialog(null, s, err, JOptionPane.ERROR_MESSAGE);
-//    }
+/*
+    Author: Aurelio Martinez 
+    Class:  COP3337-U02C-1195   
+    Copyright© Aurelio Martinez
+*/
