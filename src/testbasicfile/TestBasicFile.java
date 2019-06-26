@@ -15,7 +15,7 @@ public class TestBasicFile
     {
         // Initializing variables.
         boolean done = false;        
-        String menu = "Enter option\n1. Open File\n2. Copy File\n3. Write File\n4. Display Input File Attributes\n5. Display Input File Content\n6. Search Input File\n7. Quit";
+        String menu = "Enter option\n1. Open File\n2. Copy File\n3. Write File\n4. Display Input File Attributes\n5. Display Input File Content\n6. Search Input File\n7. Tokenize\n8. Quit";
         
         // Creating BasicFile object.
         BasicFile fileObject = new BasicFile();
@@ -47,20 +47,23 @@ public class TestBasicFile
 // STILLLLLLLLLLL ON MAINTANCEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE.
                         fileObject.writeOutputFile();                        
                         break;
-                    case 4:
-                        //display("STILL ON MAINTANCE", "!!!ATTENTION!!!", JOptionPane.WARNING_MESSAGE);
+                    case 4:                        
                         fileObject.showAttributes();
                         break;
-                    case 5:
-                        display("STILL ON MAINTANCE", "!!!ATTENTION!!!", JOptionPane.WARNING_MESSAGE);
+                    case 5:                        
+                        fileObject.displayFile();
                         break;
                     case 6:
-                        display("STILL ON MAINTANCE", "!!!ATTENTION!!!", JOptionPane.WARNING_MESSAGE);
-                        break; 
-                    // EXIT.    
+                        //display("STILL ON MAINTANCE", "!!!ATTENTION!!!", JOptionPane.WARNING_MESSAGE);
+                        fileObject.searchFile();
+                        break;                         
                     case 7:
-                        done = true;
+                        display("STILL ON MAINTANCE", "!!!ATTENTION!!!", JOptionPane.WARNING_MESSAGE);
                         break;
+                    // EXIT.    
+                    case 8:
+                        done = true;
+                        break;    
                     // Else display message none was selected.    
                     default:
                         display("This option is undefine", "Error", JOptionPane.ERROR_MESSAGE);

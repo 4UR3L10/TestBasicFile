@@ -1,6 +1,7 @@
 package testbasicfile;
 
 // Import Statements.
+import java.io.BufferedReader;
 import java.io.DataInputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -12,6 +13,8 @@ import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import java.io.IOException;
 import java.io.LineNumberReader;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
  
@@ -146,17 +149,24 @@ public class BasicFile
         int N = s2.length(); 
       
         /* A loop to slide pat[] one by one */
-        for (int i = 0; i <= N - M; i++) { 
-            int j; 
+        for (int i = 0; i <= N - M; i++) 
+        { 
+            int j = 0; 
       
             /* For current index i, check for 
             pattern match */
-            for (j = 0; j < M; j++) 
-                if (s2.charAt(i + j) != s1.charAt(j)) 
-                    break; 
-      
-            if (j == M) 
-                return true; 
+            for (j = 0; j < M; j++)
+            {
+                if (s2.charAt(i + j) != s1.charAt(j))
+                {
+                    break;
+                }
+            }
+
+            if (j == M)
+            {
+                return true;
+            }
         } 
       
         return false; 
@@ -312,8 +322,7 @@ public class BasicFile
                 e.printStackTrace();
             }
         }
-    }
-    
+    }    
     
     // Input 04 Show Attributes.
     void showAttributes() 
@@ -349,5 +358,67 @@ public class BasicFile
         showScrollPane(resultingString, "Input File Attributes", JOptionPane.INFORMATION_MESSAGE);
     }
     
+    // Input 05 Display Content of File.
+    void displayFile() 
+    {
+        try
+        {
+            String lines = "";
+            BufferedReader br = new BufferedReader(new FileReader(fileObject));
+            String line = null;
+            while ((line = br.readLine()) != null)
+            {                
+                lines = lines + line + "\n";
+            }
+            
+            // Showing the Attributes of the File in a Scroll Pane
+            showScrollPane(lines, "Input File Attributes", JOptionPane.INFORMATION_MESSAGE);
+        }
+        catch (IOException exceptionName)
+        {
+            display("Approved option was not selected", exceptionName.toString(),JOptionPane.ERROR_MESSAGE);
+        }
+
+    }
     
+    void searchFile()
+    {
+        
+        
+        //Construct the LineNumberReader object 
+        try
+        {            
+            LineNumberReader lnr = new LineNumberReader(new FileReader(fileObject));
+            String word = JOptionPane.showInputDialog(null, "Enter the word to search in the file: ");
+            word = " " + word + " ";
+            String line = "";
+            String s = "";
+            
+            while ((line = lnr.readLine()) != null)
+            {
+                // If searching for the word.
+                if (isSubstring(word, line))
+                {
+                   if(word.equalsIgnoreCase(word)){
+                      s = s + "Line : " + lnr.getLineNumber() + "  " + line + '\n'; 
+                   }                     
+                }
+                
+            }
+            
+            System.out.println(s);
+            
+        } 
+        // In case the file was not found.
+        catch (FileNotFoundException exceptionName)
+        {
+            display("File not found ....", exceptionName.toString(), JOptionPane.WARNING_MESSAGE);
+        } 
+        // In case the user cancel or exits.
+        catch (IOException exceptionName)
+        {
+            display("Approved option was not selected", exceptionName.toString(),JOptionPane.ERROR_MESSAGE);
+        } 
+
+    }
 }
