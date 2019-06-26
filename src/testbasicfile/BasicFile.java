@@ -389,7 +389,7 @@ public class BasicFile
         }
     }
     
-//        TESTINGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGFOR WRITE OUTPUT FILE     
+//TESTINGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGFOR WRITE OUTPUT FILE     
     public String readLineByLine(File f) throws IOException
     {
         //Construct the LineNumberReader object 
@@ -429,19 +429,18 @@ public class BasicFile
 
         fw.close();
     }
-
     
     public void writeOutputFile()
     {
-        // Creating FileChooser object
-        JFileChooser chooseObject = new JFileChooser(".");
-        
-       // Brings up the dialog box for selecting a file or directory.
-        int status = chooseObject.showOpenDialog(null);
-        
         // Try-Catch statement in case the was a problem with the file or the user exits. 
         try
         {
+            // Creating FileChooser object
+            JFileChooser chooseObject = new JFileChooser(".");
+
+            // Brings up the dialog box for selecting a file or directory.
+            int status = chooseObject.showOpenDialog(null);
+        
             // If the option was not a valid one.
             if (status != JFileChooser.APPROVE_OPTION) throw new IOException();
             {              
@@ -484,7 +483,7 @@ public class BasicFile
             display("Approved option was not selected", exceptionName.toString(),JOptionPane.ERROR_MESSAGE);
         }         
     }
-//        TESTINGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGFOR WRITE OUTPUT FILE
+//TESTINGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGFOR WRITE OUTPUT FILE
     
     
     public String listRecursive(File dir) 
