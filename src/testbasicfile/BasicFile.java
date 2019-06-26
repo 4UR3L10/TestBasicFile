@@ -33,7 +33,7 @@ public class BasicFile
     // String to get all directories.????????????????????????????????????????????
     String directories = "";
     
-    // Constructor.
+    // Default Constructor.
     public BasicFile()
     {
         
@@ -260,7 +260,7 @@ public class BasicFile
 //        TESTINGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGFOR WRITE OUTPUT FILE
     
     
-    public String listRecursive(File dir) // change method....
+    public String listRecursive(File dir) 
     {        
         String counter = "";
         
@@ -272,14 +272,11 @@ public class BasicFile
             {
                 if (i.isFile())
                 {
-//                    System.out.println("\tFile: " + i.getAbsoluteFile() + "\t" + i.length() + " bytes");
-                      //JOptionPane.showMessageDialog(null, "\tFile: " + i.getAbsoluteFile() + "\t" + i.length() + " bytes");
-                    counter = counter + "\tFile: " + i.getAbsoluteFile() + "\t" + i.length() + " bytes\n";
+                    counter = counter + "\tFile: " + i.getAbsoluteFile() + i.length() + " bytes\n";
                 } 
                 else  // (i.isDirectory())  
-                {
-                    //JOptionPane.showMessageDialog(null, "Directory: " + i.getName());
-                    counter = counter + "Directory: " + i.getName();
+                {                    
+                    counter = counter + "\tDirectory: " + i.getName() + "\n";
                     listRecursive(i);  // Recursive call 
                 }
             }
@@ -321,20 +318,19 @@ public class BasicFile
     // Input 04 Show Attributes.
     void showAttributes() 
     {
+        // String to hold the output of the attributes.
         String resultingString = "";
                 
+        // The Absolute Path of the File.
         resultingString = "Absolute Path: " + fileObject.getAbsolutePath() + "\n";
         
+        // Files and Directories that are in the Path of the File.
+        resultingString = resultingString + listRecursive(fileObject.getParentFile());
         
+        // The Size of the File in Kilobytes.
+        resultingString = resultingString + "Size: " + (fileObject.length() / 1000) + " KB" +"\n"; 
         
-              resultingString = resultingString + listRecursive(fileObject.getParentFile());
-        
-              
-        
-        
-        
-        
-        resultingString = resultingString + "Size: " + (fileObject.length() / 1000) + " KB" +"\n";        
+        // The Number of Lines in the File (if text file is selected)
         try
         {
             // If user selected a txt file show number of lines.
@@ -347,9 +343,9 @@ public class BasicFile
         catch (IOException e)
         {
             e.printStackTrace();
-        }
+        }        
         
-        
+        // Showing the Attributes of the File in a Scroll Pane
         showScrollPane(resultingString, "Input File Attributes", JOptionPane.INFORMATION_MESSAGE);
     }
     
