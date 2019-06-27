@@ -22,6 +22,8 @@ import java.io.LineNumberReader;
 import java.io.StreamTokenizer;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
+// Importing my own Exception.
+import testbasicfile.MyException;
 
 public class BasicFile
 {
@@ -120,40 +122,54 @@ public class BasicFile
     {
         try
         {
-            // Checking if there is file loaded.
-            fileObject.canExecute();
-            
-            // Choosing to save or overwrite the file.
-            JFileChooser choose = new JFileChooser(".");
-            int status = choose.showSaveDialog(null);
-            
-            // If not save the file throw exception.
-            if (status != JFileChooser.APPROVE_OPTION)
+            // If user selected a txt file.
+            if (isSubstring(".txt", fileObject.getName())) 
             {
-                throw new IOException();
+                try
+                {
+                    // Checking if there is file loaded.
+                    fileObject.canExecute();
+
+                    // Choosing to save or overwrite the file.
+                    JFileChooser choose = new JFileChooser(".");                    
+                    int status = choose.showSaveDialog(null);                    
+
+                    // If not save the file throw exception.
+                    if (status != JFileChooser.APPROVE_OPTION)
+                    {
+                        throw new IOException();
+                    }
+
+                    // Getting the file and passing it to File Writer.
+                    File f = choose.getSelectedFile();
+
+                    // Append.
+                    FileWriter fileWriterObject = new FileWriter(f);
+
+                    // Set all lines read by the method and storing them into the String.
+                    String writerString = readLineByLine(fileObject);
+
+                    // Writing the info to the file.
+                    fileWriterObject.write(writerString, 0, writerString.length());
+                    fileWriterObject.flush();
+
+                    // Closing.
+                    fileWriterObject.close();
+                } // In case the user cancel or exits.
+                catch (IOException exceptionName)
+                {
+                    display("Approved option was not selected", exceptionName.toString(), JOptionPane.ERROR_MESSAGE);
+                }
+            } 
+            else
+            {               
+               throw new MyException(fileObject.getName());
             }
-            
-            // Getting the file and passing it to File Writer.
-            File f = choose.getSelectedFile();
-
-            // Append.
-            FileWriter fileWriterObject = new FileWriter(f); 
-            
-            // Set all lines read by the method and storing them into the String.
-            String writerString = readLineByLine(fileObject); 
-
-            // Writing the info to the file.
-            fileWriterObject.write(writerString, 0, writerString.length());
-            fileWriterObject.flush();
-            
-            // Closing.
-            fileWriterObject.close();
         }
-        
-        // In case the user cancel or exits.
-        catch (IOException exceptionName)
+        // In case the user select a file that is not a text file.
+        catch(MyException exceptionName)
         {
-            display("Approved option was not selected", exceptionName.toString(),JOptionPane.ERROR_MESSAGE);
+            display(exceptionName.toString(),"Error",JOptionPane.ERROR_MESSAGE);
         }
     }
     
@@ -182,199 +198,241 @@ public class BasicFile
                 resultingString = resultingString + "Number of lines: " + numberLines +"\n";
             }
         } 
-        catch (IOException e)
+        // In case the user cancel or exits.
+        catch (IOException exceptionName)
         {
-            e.printStackTrace();
-        }        
+            display("Approved option was not selected", exceptionName.toString(), JOptionPane.ERROR_MESSAGE);
+        }    
         
         // Showing the Attributes of the File in a Scroll Pane
         showScrollPane(resultingString, "Input File Attributes", JOptionPane.INFORMATION_MESSAGE);
     }
     
     // Input 05 Display Content of File.
-    public void displayFile() 
+    public void displayFile()
     {
         try
         {
-            String lines = "";
-            BufferedReader br = new BufferedReader(new FileReader(fileObject));
-            String line = null;
-            while ((line = br.readLine()) != null)
-            {                
-                lines = lines + line + "\n";
-            }
-            
-            // Showing the Attributes of the File in a Scroll Pane
-            showScrollPane(lines, "Input File Attributes", JOptionPane.INFORMATION_MESSAGE);
-        }
-        catch (IOException exceptionName)
-        {
-            display("Approved option was not selected", exceptionName.toString(),JOptionPane.ERROR_MESSAGE);
-        }
+            // If user selected a txt file.
+            if (isSubstring(".txt", fileObject.getName()))
+            {
+                try
+                {
+                    String lines = "";
+                    BufferedReader br = new BufferedReader(new FileReader(fileObject));
+                    String line = null;
+                    while ((line = br.readLine()) != null)
+                    {
+                        lines = lines + line + "\n";
+                    }
 
+                    // Showing the Attributes of the File in a Scroll Pane
+                    showScrollPane(lines, "Input File Attributes", JOptionPane.INFORMATION_MESSAGE);
+                } 
+                catch (IOException exceptionName)
+                {
+                    display("Approved option was not selected", exceptionName.toString(), JOptionPane.ERROR_MESSAGE);
+                }
+            } 
+            else
+            {
+                throw new MyException(fileObject.getName());
+            }
+        } 
+        // In case the user select a file that is not a text file.
+        catch (MyException exceptionName)
+        {
+            display(exceptionName.toString(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
     }
     
     // Input 06 Search a given String.    
     public void searchFile()
     {
-        // Getting the File to Search for the Given Word. 
         try
-        {            
-            LineNumberReader lnr = new LineNumberReader(new FileReader(fileObject));
-            String word = JOptionPane.showInputDialog(null, "Enter the word to search in the file: ");
-            String line = "";
-            String s = "\t\t\tFound on:\n";
-            int lineHolder = 0;
-            String[] words = null;  //Intialize the word Array.
-            
-            while ((line = lnr.readLine()) != null)
+        {
+            // If user selected a txt file.
+            if (isSubstring(".txt", fileObject.getName()))
             {
-                // Split the word using space.
-                words = line.split(" ");  
-                
-                for (String testWord : words)
+                // Getting the File to Search for the Given Word. 
+                try
                 {
-                    // Search for the given word.
-                    if (testWord.equalsIgnoreCase(word))   
+                    LineNumberReader lnr = new LineNumberReader(new FileReader(fileObject));
+                    String word = JOptionPane.showInputDialog(null, "Enter the word to search in the file: ");
+                    String line = "";
+                    String s = "\t\t\tFound on:\n";
+                    int lineHolder = 0;
+                    String[] words = null;  //Intialize the word Array.
+
+                    while ((line = lnr.readLine()) != null)
                     {
-                        // If the Word is repeated in the same line do not show it twice.
-                        if(lineHolder == lnr.getLineNumber())
+                        // Split the word using space.
+                        words = line.split(" ");
+
+                        for (String testWord : words)
                         {
-                            
-                        }
-                        else
-                        {
-                            s = s + lnr.getLineNumber() + ": " + line + '\n';                          
-                            lineHolder = lnr.getLineNumber();
+                            // Search for the given word.
+                            if (testWord.equalsIgnoreCase(word))
+                            {
+                                // If the Word is repeated in the same line do not show it twice.
+                                if (lineHolder == lnr.getLineNumber())
+                                {
+
+                                } else
+                                {
+                                    s = s + lnr.getLineNumber() + ": " + line + '\n';
+                                    lineHolder = lnr.getLineNumber();
+                                }
+                            }
                         }
                     }
-                }              
+
+                    // Shows the line(s) in which the word was found.
+                    showScrollPane(s, "Input File Search", JOptionPane.INFORMATION_MESSAGE);
+                } // In case the file was not found.
+                catch (FileNotFoundException exceptionName)
+                {
+                    display("File not found ....", exceptionName.toString(), JOptionPane.WARNING_MESSAGE);
+                } // In case the user cancel or exits.
+                catch (IOException exceptionName)
+                {
+                    display("Error", exceptionName.toString(), JOptionPane.ERROR_MESSAGE);
+                }
+            } 
+            else
+            {
+                throw new MyException(fileObject.getName());
             }
-            
-            // Shows the line(s) in which the word was found.
-            showScrollPane(s, "Input File Search", JOptionPane.INFORMATION_MESSAGE);     
         } 
-        
-        // In case the file was not found.
-        catch (FileNotFoundException exceptionName)
+        // In case the user select a file that is not a text file.
+        catch (MyException exceptionName)
         {
-            display("File not found ....", exceptionName.toString(), JOptionPane.WARNING_MESSAGE);
-        } 
-        
-        // In case the user cancel or exits.
-        catch (IOException exceptionName)
-        {
-            display("Error", exceptionName.toString(),JOptionPane.ERROR_MESSAGE);
-        } 
+            display(exceptionName.toString(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
     }
     
     // Input 07 Search using the Tokenizer.
     public void searchFileTokenizer()
-    {        
+    {
         try
         {
-            // Initialization.
-            int lineNumber = 0;
-            boolean found = false;
-            String line = "";  // Hold one line.
-            String lineReader = "";  // Temp Var to hold the a line.
-            String finishLine = "\t\t\tFound on:\n";  // Line to hold the final output.
-            StreamTokenizer st = new StreamTokenizer(new FileReader(fileObject));
-            String word = JOptionPane.showInputDialog(null, "Enter the word to search in the file: ");
-            
-            // Given.
-            st.eolIsSignificant(true);     // Recognize end of line as token 
-            st.wordChars('"', '"');         // Recognize double quote (") as token 
-            st.wordChars('@', '@');    // Recognize at (@) as token 
-            st.wordChars(',', ',');          // Recognize comma (,) as token 
-            st.wordChars('\'', '\'');      // Recognize single quote (') as token 
-            st.wordChars('!', '!');         // Recognize exclamation(!) as token 
-            st.lowerCaseMode(true); // Convert uppercase characters to lower case 
-            
-            // While Not End of File keep looping.
-            while (st.nextToken() != StreamTokenizer.TT_EOF)           
-            {    
-                // Assign each reading to the following categories: word,char,number and End of Line.
-                switch (st.ttype)
-                {
-                    // WORD.
-                    case StreamTokenizer.TT_WORD:  
-                        // Build the line using the temp var.
-                        lineReader = lineReader + " " + st.sval;
-                        
-                        // Coverting the Given Input and Word to lowercase.
-                        String newLowerWord = st.sval.toLowerCase();
-                        word = word.toLowerCase();
-                        
-                        // Using method to find the given input. 
-                        if (isSubstring(word, newLowerWord))
-                        {
-                            found = true;
-                        }                      
-                    break;
-                    
-                    // NUMBER
-                    case StreamTokenizer.TT_NUMBER:     
-                       // Build the line using the temp var.
-                       lineReader = lineReader + " " + st.nval;
-                    break;
-                    
-                    // END OF LINE [ENTER] \n.
-                    case StreamTokenizer.TT_EOL:                        
-                        // In each End Of Line increasing the line number.
-                        lineNumber++;
-                        
-                        // Build the line using the temp var.
-                        lineReader = lineReader + "\n";
-                        
-                        // In case of found get the line in where the word was found and build output.
-                        if (found == true)
-                        {
-                            line = lineReader;
-                            finishLine = finishLine + lineNumber + ": " + line;
-                            found = false;  // If found reset.
-                        }
-                        
-                        // Reset Values.
-                        line = "";
-                        lineReader = "";                     
-                    break;
-                    
-                    default:
-                        // System.out.println((char) st.ttype + " ++> not recognized");
-                    break;
-                }
-            }
-            
-            // Getting the END OF FILE LINE.
-            lineReader = lineReader + "\n";
-            if (found == true)
+            // If user selected a txt file.
+            if (isSubstring(".txt", fileObject.getName()))
             {
-                line = lineReader;
-                lineNumber++;
-                finishLine = finishLine + lineNumber + ": " + line;
-                found = false;
-            }
 
-            line = "";
-            lineReader = "";
-            
-            // Shows the line(s) in which the word was found.
-            showScrollPane(finishLine, "Tokenized Input File Search", JOptionPane.INFORMATION_MESSAGE); 
-        }
-        
-        // In case the file was not found.
-        catch (FileNotFoundException exceptionName)
-        {
-            display("File not found ....", exceptionName.toString(), JOptionPane.WARNING_MESSAGE);
+                try
+                {
+                    // Initialization.
+                    int lineNumber = 0;
+                    boolean found = false;
+                    String line = "";  // Hold one line.
+                    String lineReader = "";  // Temp Var to hold the a line.
+                    String finishLine = "\t\t\tFound on:\n";  // Line to hold the final output.
+                    StreamTokenizer st = new StreamTokenizer(new FileReader(fileObject));
+                    String word = JOptionPane.showInputDialog(null, "Enter the word to search in the file: ");
+
+                    // Given.
+                    st.eolIsSignificant(true);     // Recognize end of line as token 
+                    st.wordChars('"', '"');         // Recognize double quote (") as token 
+                    st.wordChars('@', '@');    // Recognize at (@) as token 
+                    st.wordChars(',', ',');          // Recognize comma (,) as token 
+                    st.wordChars('\'', '\'');      // Recognize single quote (') as token 
+                    st.wordChars('!', '!');         // Recognize exclamation(!) as token 
+                    st.lowerCaseMode(true); // Convert uppercase characters to lower case 
+
+                    // While Not End of File keep looping.
+                    while (st.nextToken() != StreamTokenizer.TT_EOF)
+                    {
+                        // Assign each reading to the following categories: word,char,number and End of Line.
+                        switch (st.ttype)
+                        {
+                            // WORD.
+                            case StreamTokenizer.TT_WORD:
+                                // Build the line using the temp var.
+                                lineReader = lineReader + " " + st.sval;
+
+                                // Coverting the Given Input and Word to lowercase.
+                                String newLowerWord = st.sval.toLowerCase();
+                                word = word.toLowerCase();
+
+                                // Using method to find the given input. 
+                                if (isSubstring(word, newLowerWord))
+                                {
+                                    found = true;
+                                }
+                            break;
+
+                            // NUMBER
+                            case StreamTokenizer.TT_NUMBER:
+                                // Build the line using the temp var.
+                                lineReader = lineReader + " " + st.nval;
+                            break;
+
+                            // END OF LINE [ENTER] \n.
+                            case StreamTokenizer.TT_EOL:
+                                // In each End Of Line increasing the line number.
+                                lineNumber++;
+
+                                // Build the line using the temp var.
+                                lineReader = lineReader + "\n";
+
+                                // In case of found get the line in where the word was found and build output.
+                                if (found == true)
+                                {
+                                    line = lineReader;
+                                    finishLine = finishLine + lineNumber + ": " + line;
+                                    found = false;  // If found reset.
+                                }
+
+                                // Reset Values.
+                                line = "";
+                                lineReader = "";
+                            break;
+
+                            default:
+                                // System.out.println((char) st.ttype + " ++> not recognized");
+                            break;
+                        }
+                    }
+
+                    // Getting the END OF FILE LINE.
+                    lineReader = lineReader + "\n";
+                    if (found == true)
+                    {
+                        line = lineReader;
+                        lineNumber++;
+                        finishLine = finishLine + lineNumber + ": " + line;
+                        found = false;
+                    }
+
+                    line = "";
+                    lineReader = "";
+
+                    // Shows the line(s) in which the word was found.
+                    showScrollPane(finishLine, "Tokenized Input File Search", JOptionPane.INFORMATION_MESSAGE);
+                } 
+                // In case the file was not found.
+                catch (FileNotFoundException exceptionName)
+                {
+                    display("File not found ....", exceptionName.toString(), JOptionPane.WARNING_MESSAGE);
+                } 
+                // In case the user cancel or exits.
+                catch (IOException exceptionName)
+                {
+                    display("Error", exceptionName.toString(), JOptionPane.ERROR_MESSAGE);
+                }
+            } 
+            else
+            {
+                throw new MyException(fileObject.getName());
+            }
         } 
-        
-        // In case the user cancel or exits.
-        catch (IOException exceptionName)
+        // In case the user select a file that is not a text file.
+        catch (MyException exceptionName)
         {
-            display("Error", exceptionName.toString(),JOptionPane.ERROR_MESSAGE);
+            display(exceptionName.toString(), "Error", JOptionPane.ERROR_MESSAGE);
         }
-    }    
+    }
     
     // Gets the files and directories of a file.
     public String listRecursive(File dir) 
@@ -428,9 +486,10 @@ public class BasicFile
             {
                 lnr.close();
             } 
-            catch (IOException e)
+            // In case the user cancel or exits.
+            catch (IOException exceptionName)
             {
-                e.printStackTrace();
+                display("Approved option was not selected", exceptionName.toString(), JOptionPane.ERROR_MESSAGE);
             }
         }
     }    
